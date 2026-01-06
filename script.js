@@ -423,6 +423,7 @@ function updateHeaderBackButton(view) {
     const headerTitle = document.getElementById('headerTitle');
     const headerInterviewName = document.getElementById('headerInterviewName');
     const headerInterviewTitle = document.getElementById('headerInterviewTitle');
+    const headerActions = document.getElementById('headerActions');
     
     if (!headerBackBtn || !headerTitle || !headerInterviewName) return;
     
@@ -430,6 +431,7 @@ function updateHeaderBackButton(view) {
         headerBackBtn.style.display = 'none';
         headerTitle.style.display = 'block';
         headerInterviewName.style.display = 'none';
+        if (headerActions) headerActions.style.display = 'none';
     } else if (view === 'questions') {
         headerBackBtn.style.display = 'block';
         headerBackBtn.textContent = 'Back';
@@ -439,6 +441,8 @@ function updateHeaderBackButton(view) {
         if (headerInterviewTitle) {
             headerInterviewTitle.textContent = getInterviewTypeName(currentInterviewType);
         }
+        if (headerActions) headerActions.style.display = 'block';
+        createStartInterviewButton();
     } else if (view === 'interview') {
         headerBackBtn.style.display = 'block';
         headerBackBtn.textContent = 'Back';
@@ -448,7 +452,26 @@ function updateHeaderBackButton(view) {
         if (headerInterviewTitle) {
             headerInterviewTitle.textContent = getInterviewTypeName(currentInterviewType);
         }
+        if (headerActions) headerActions.style.display = 'none';
     }
+}
+
+// Create Start Interviewing button in header
+function createStartInterviewButton() {
+    const headerActions = document.getElementById('headerActions');
+    if (!headerActions) return;
+    
+    // Clear existing button if any
+    headerActions.innerHTML = '';
+    
+    const startBtn = document.createElement('button');
+    startBtn.id = 'startInterview';
+    startBtn.className = 'btn btn-primary btn-large';
+    startBtn.textContent = 'Start Interviewing';
+    startBtn.addEventListener('click', () => {
+        showInterviewView();
+    });
+    headerActions.appendChild(startBtn);
 }
 
 // Load questions for selected interview type
@@ -495,19 +518,6 @@ function showQuestionsList() {
     });
     
     questionsListContainer.appendChild(questionsList);
-    
-    // Create start button
-    const startButton = document.createElement('div');
-    startButton.className = 'start-interview-section';
-    const startBtn = document.createElement('button');
-    startBtn.id = 'startInterview';
-    startBtn.className = 'btn btn-primary btn-large';
-    startBtn.textContent = 'Start Interviewing';
-    startBtn.addEventListener('click', () => {
-        showInterviewView();
-    });
-    startButton.appendChild(startBtn);
-    questionsListContainer.appendChild(startButton);
     
     questionsListContainer.style.display = 'block';
 }
