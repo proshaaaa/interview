@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senior Product Designer Interview Tool</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Senior Product Designer Interview Tool</h1>
+            <p class="subtitle">Streamline your hiring process with structured interviews</p>
+        </header>
+
+        <!-- Home View: Interview Type Selection -->
+        <div class="home-view" id="homeView">
+            <div class="interview-steps">
+                <div class="step-card" data-type="screening">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h2>Initial Screening</h2>
+                        <p class="step-description">Assess foundational skills, approach, and cultural fit</p>
+                        <p class="step-count">17 questions</p>
+                    </div>
+                </div>
+
+                <div class="step-card" data-type="portfolio">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h2>Portfolio & Challenge Review</h2>
+                        <p class="step-description">Deep dive into past work and problem-solving approach</p>
+                        <p class="step-count">10 questions</p>
+                    </div>
+                </div>
+
+                <div class="step-card" data-type="behavioral">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h2>Behavioral Interview</h2>
+                        <p class="step-description">Understand collaboration, leadership, and decision-making</p>
+                        <p class="step-count">9 questions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Questions List View -->
+        <div class="questions-view" id="questionsView" style="display: none;">
+            <div class="view-header">
+                <button id="backToHome" class="btn-back">Back</button>
+                <div class="view-title">
+                    <h2 id="interviewTypeTitle">Initial Screening</h2>
+                    <p class="questions-count" id="questionsCount">17 questions</p>
+                </div>
+            </div>
+
+            <div class="questions-list-container" id="questionsListContainer">
+                <!-- Questions list will be shown here -->
+            </div>
+        </div>
+
+        <!-- Interview View: Flashcards -->
+        <div class="interview-view" id="interviewView" style="display: none;">
+            <div class="view-header">
+                <button id="backToQuestions" class="btn-back">Back to Questions</button>
+                <div class="timer-section">
+                    <div class="timer-display" id="timer">00:00:00</div>
+                    <div class="timer-buttons">
+                        <button id="startTimer" class="btn btn-primary">Start Timer</button>
+                        <button id="pauseTimer" class="btn btn-secondary">Pause</button>
+                        <button id="resetTimer" class="btn btn-secondary">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flashcard-container" id="flashcardContainer">
+                <!-- Flashcards will be dynamically generated here -->
+            </div>
+
+            <div class="navigation" id="navigation">
+                <button id="prevCard" class="btn btn-nav">Previous</button>
+                <span class="card-counter">
+                    <span id="currentCard">1</span> / <span id="totalCards">0</span>
+                </span>
+                <button id="nextCard" class="btn btn-nav">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
