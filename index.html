@@ -9,8 +9,16 @@
 <body>
     <div class="container">
         <header>
-            <h1>Senior Product Designer Interview Tool</h1>
-            <p class="subtitle">Streamline your hiring process with structured interviews</p>
+            <div class="header-content">
+                <button id="headerBackBtn" class="btn-back header-back" style="display: none;">Back</button>
+                <div class="header-title" id="headerTitle">
+                    <h1>Senior Product Designer Interview Tool</h1>
+                    <p class="subtitle">Streamline your hiring process with structured interviews</p>
+                </div>
+                <div class="header-interview-name" id="headerInterviewName" style="display: none;">
+                    <h1 id="headerInterviewTitle">Initial Screening</h1>
+                </div>
+            </div>
         </header>
 
         <!-- Home View: Interview Type Selection -->
@@ -47,14 +55,6 @@
 
         <!-- Questions List View -->
         <div class="questions-view" id="questionsView" style="display: none;">
-            <div class="view-header">
-                <button id="backToHome" class="btn-back">Back</button>
-                <div class="view-title">
-                    <h2 id="interviewTypeTitle">Initial Screening</h2>
-                    <p class="questions-count" id="questionsCount">17 questions</p>
-                </div>
-            </div>
-
             <div class="questions-list-container" id="questionsListContainer">
                 <!-- Questions list will be shown here -->
             </div>
@@ -63,7 +63,6 @@
         <!-- Interview View: Flashcards -->
         <div class="interview-view" id="interviewView" style="display: none;">
             <div class="view-header">
-                <button id="backToQuestions" class="btn-back">Back to Questions</button>
                 <div class="timer-section">
                     <div class="timer-display" id="timer">00:00:00</div>
                     <div class="timer-buttons">

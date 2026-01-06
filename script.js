@@ -395,6 +395,7 @@ function showHomeView() {
     if (homeView) homeView.style.display = 'block';
     if (questionsView) questionsView.style.display = 'none';
     if (interviewView) interviewView.style.display = 'none';
+    updateHeaderBackButton('home');
 }
 
 // Show questions view
@@ -404,6 +405,7 @@ function showQuestionsView(type) {
     if (questionsView) questionsView.style.display = 'block';
     if (interviewView) interviewView.style.display = 'none';
     loadInterviewType(type);
+    updateHeaderBackButton('questions');
 }
 
 // Show interview view
@@ -412,6 +414,41 @@ function showInterviewView() {
     if (questionsView) questionsView.style.display = 'none';
     if (interviewView) interviewView.style.display = 'block';
     startInterview();
+    updateHeaderBackButton('interview');
+}
+
+// Update header back button visibility and text
+function updateHeaderBackButton(view) {
+    const headerBackBtn = document.getElementById('headerBackBtn');
+    const headerTitle = document.getElementById('headerTitle');
+    const headerInterviewName = document.getElementById('headerInterviewName');
+    const headerInterviewTitle = document.getElementById('headerInterviewTitle');
+    
+    if (!headerBackBtn || !headerTitle || !headerInterviewName) return;
+    
+    if (view === 'home') {
+        headerBackBtn.style.display = 'none';
+        headerTitle.style.display = 'block';
+        headerInterviewName.style.display = 'none';
+    } else if (view === 'questions') {
+        headerBackBtn.style.display = 'block';
+        headerBackBtn.textContent = 'Back';
+        headerBackBtn.onclick = () => showHomeView();
+        headerTitle.style.display = 'none';
+        headerInterviewName.style.display = 'block';
+        if (headerInterviewTitle) {
+            headerInterviewTitle.textContent = getInterviewTypeName(currentInterviewType);
+        }
+    } else if (view === 'interview') {
+        headerBackBtn.style.display = 'block';
+        headerBackBtn.textContent = 'Back';
+        headerBackBtn.onclick = () => showQuestionsView(currentInterviewType);
+        headerTitle.style.display = 'none';
+        headerInterviewName.style.display = 'block';
+        if (headerInterviewTitle) {
+            headerInterviewTitle.textContent = getInterviewTypeName(currentInterviewType);
+        }
+    }
 }
 
 // Load questions for selected interview type
@@ -419,18 +456,8 @@ function loadInterviewType(type) {
     currentInterviewType = type;
     currentCardIndex = 0;
     showQuestionsList();
-    updateInterviewTypeTitle();
 }
 
-// Update interview type title
-function updateInterviewTypeTitle() {
-    const title = document.getElementById('interviewTypeTitle');
-    const count = document.getElementById('questionsCount');
-    const questions = interviewQuestions[currentInterviewType];
-    
-    title.textContent = getInterviewTypeName(currentInterviewType);
-    count.textContent = `${questions.length} questions`;
-}
 
 // Show questions list view
 function showQuestionsList() {
@@ -450,15 +477,6 @@ function showQuestionsList() {
         questionsListContainer.innerHTML = '<p>No questions available for this interview type.</p>';
         return;
     }
-    
-    // Create header
-    const header = document.createElement('div');
-    header.className = 'questions-header';
-    header.innerHTML = `
-        <h2>${getInterviewTypeName(currentInterviewType)}</h2>
-        <p class="questions-count">${questions.length} questions</p>
-    `;
-    questionsListContainer.appendChild(header);
     
     // Create questions list
     const questionsList = document.createElement('div');
@@ -649,15 +667,7 @@ function setupEventListeners() {
         });
     });
     
-    // Back to home button
-    document.getElementById('backToHome').addEventListener('click', () => {
-        showHomeView();
-    });
-    
-    // Back to questions button
-    document.getElementById('backToQuestions').addEventListener('click', () => {
-        showQuestionsView(currentInterviewType);
-    });
+    // Header back button is handled in updateHeaderBackButton function
     
     // Timer buttons
     document.getElementById('startTimer').addEventListener('click', startTimer);
