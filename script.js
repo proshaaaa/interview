@@ -381,6 +381,7 @@ const interviewQuestions = {
 
 // Application state
 let currentInterviewType = 'screening';
+let currentMode = 'interviewer'; // 'interviewer' or 'candidate'
 let currentCardIndex = 0;
 let timerInterval = null;
 let timerSeconds = 0;
@@ -398,6 +399,25 @@ function init() {
     
     showHomeView();
     setupEventListeners();
+}
+
+// Set interview mode
+function setMode(mode) {
+    currentMode = mode;
+    
+    // Update button states
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        if (btn.dataset.mode === mode) {
+            btn.classList.add('active');
+        } else {
+            btn.classList.remove('active');
+        }
+    });
+    
+    // Re-render flashcards if in interview view
+    if (interviewView && interviewView.style.display !== 'none') {
+        renderFlashcards();
+    }
 }
 
 // Show home view
@@ -582,19 +602,45 @@ function createFlashcard(questionData, index) {
     flashcard.dataset.index = index;
     flashcard.style.display = index === 0 ? 'block' : 'none';
     
+    // Set labels and format structure based on mode
+    const backLabel = currentMode === 'interviewer' ? 'What to look for:' : 'How to answer:';
+    const backTitle = currentMode === 'interviewer' ? 'Answer Structure' : 'Answer Structure';
+    const flipHint = currentMode === 'interviewer' ? 'Click to view answer structure' : 'Click to view answer structure';
+    
+    // Format structure items differently based on mode
+    let structureItems;
+    if (currentMode === 'interviewer') {
+        // For interviewer: show what to look for (original format)
+        structureItems = questionData.structure.map(item => `<li>${item}</li>`).join('');
+    } else {
+        // For candidate: rephrase as action items with "You should" or "Make sure to"
+        structureItems = questionData.structure.map(item => {
+            // Check if item already starts with a verb in imperative form
+            const startsWithVerb = /^(Discuss|Explain|Share|Describe|Mention|Detail|Reference|List|Show|Connect|Present|Walk|Tell|Give|Critique|Identify|Set|Start|Describe|Detail)/i.test(item);
+            
+            if (startsWithVerb) {
+                // Add "You should" before the verb
+                return `<li>You should ${item.charAt(0).toLowerCase() + item.slice(1)}</li>`;
+            } else {
+                // Add "Make sure to" prefix
+                return `<li>Make sure to ${item.charAt(0).toLowerCase() + item.slice(1)}</li>`;
+            }
+        }).join('');
+    }
+    
     flashcard.innerHTML = `
         <div class="flashcard-inner">
             <div class="flashcard-front">
                 <div class="question-type">Question</div>
                 <div class="question-text">${questionData.question}</div>
-                <div class="flip-hint">Click to view answer structure</div>
+                <div class="flip-hint">${flipHint}</div>
             </div>
             <div class="flashcard-back">
-                <div class="question-type">Answer Structure</div>
-                <div class="hint-label">What to look for:</div>
+                <div class="question-type">${backTitle}</div>
+                <div class="hint-label">${backLabel}</div>
                 <div class="answer-structure">
                     <ul>
-                        ${questionData.structure.map(item => `<li>${item}</li>`).join('')}
+                        ${structureItems}
                     </ul>
                 </div>
                 <div class="flip-hint">Click to view question</div>
@@ -679,6 +725,14 @@ function updateTimerDisplay() {
 
 // Setup event listeners
 function setupEventListeners() {
+    // Mode selection buttons
+    document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const mode = btn.dataset.mode;
+            setMode(mode);
+        });
+    });
+    
     // Step cards on home view
     document.querySelectorAll('.step-card').forEach(card => {
         card.addEventListener('click', () => {
