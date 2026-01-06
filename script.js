@@ -2,6 +2,16 @@
 const interviewQuestions = {
     screening: [
         {
+            question: "Tell me about yourself",
+            structure: [
+                "Provide a brief professional background and current role",
+                "Highlight relevant experience and key achievements",
+                "Mention what brought you to this role/company",
+                "Share what you're looking for in your next opportunity",
+                "Keep it concise (2-3 minutes) and relevant to the position"
+            ]
+        },
+        {
             question: "How do you balance product quality with speed when the company needs to move fast?",
             structure: [
                 "Discuss prioritization frameworks (e.g., MoSCoW, RICE)",
